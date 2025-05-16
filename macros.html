@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Macro Calculator</title>
+   <link rel="stylesheet" href="styles.css">
+   <style>
+       form {
+           max-width: 600px;
+           margin: 0 auto;
+       }
+       label {
+           font-weight: bold;
+           display: block;
+           margin-top: 15px;
+       }
+       input, select {
+           width: 100%;
+           padding: 10px;
+           margin-top: 5px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+       }
+       #results {
+           margin-top: 30px;
+           padding: 20px;
+           background: #e0f2fe;
+           border-radius: 10px;
+           text-align: center;
+       }
+       button {
+           margin-top: 20px;
+           padding: 10px 20px;
+           background-color: #2563eb;
+           color: white;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+       }
+       button:hover {
+           background-color: #1e40af;
+       }
+   </style>
+</head>
+<body>
+   <header>
+       <h1>Macro Calculator</h1>
+       <nav>
+           <a href="index.html">Home</a>
+           <a href="macros.html">Macro Calculator</a>
+           <a href="planner.html">Meal Planner</a>
+           <a href="workout.html">Workout Planner</a>
+           <a href="journal.html">Journal</a>
+       </nav>
+   </header>
+   <main>
+       <section>
+           <form id="macroForm">
+               <label for="gender">Gender</label>
+               <select id="gender">
+                   <option value="male">Male</option>
+                   <option value="female">Female</option>
+               </select>
+
+               <label for="age">Age</label>
+               <input type="number" id="age" placeholder="e.g. 25">
+
+               <label for="height">Height (inches)</label>
+               <input type="number" id="height" placeholder="e.g. 68">
+
+               <label for="weight">Weight (lbs)</label>
+               <input type="number" id="weight" placeholder="e.g. 160">
+
+               <label for="activity">Activity Level</label>
+               <select id="activity">
+                   <option value="1.2">Sedentary (little to no exercise)</option>
+                   <option value="1.375">Light exercise (1–3 days/week)</option>
+                   <option value="1.55">Moderate exercise (3–5 days/week)</option>
+                   <option value="1.725">Heavy exercise (6–7 days/week)</option>
+                   <option value="1.9">Athlete-level training</option>
+               </select>
+
+               <label for="goal">Goal</label>
+               <select id="goal">
+                   <option value="lose">Lose Fat</option>
+                   <option value="maintain">Maintain</option>
+                   <option value="gain">Gain Muscle</option>
+               </select>
+
+               <button type="button" onclick="calculateMacros()">Calculate</button>
+           </form>
+
+           <div id="results">
+               <h3>Your Macros Will Appear Here</h3>
+               <p>Protein: -- g<br>Carbs: -- g<br>Fat: -- g</p>
+           </div>
+       </section>
+   </main>
+
+   <script>
+       function calculateMacros() {
+           const gender = document.getElementById("gender").value;
+           const age = parseFloat(document.getElementById("age").value);
+           const height = parseFloat(document.getElementById("height").value);
+           const weight = parseFloat(document.getElementById("weight").value);
+           const activity = parseFloat(document.getElementById("activity").value);
+           const goal = document.getElementById("goal").value;
+
+           if (isNaN(age) || isNaN(height) || isNaN(weight)) {
+               alert("Please enter valid numbers for age, height (inches), and weight (lbs).");
+               return;
+           }
+
+           let bmr;
+           if (gender === "male") {
+               bmr = 66 + (6.23 * weight) + (12.7 * height) - (6.8 * age);
+           } else {
+               bmr = 655 + (4.35 * weight) + (4.7 * height) - (4.7 * age);
+           }
+
+           const tdee = bmr * activity;
+
+           let calories;
+           if (goal === "lose") {
+               calories = tdee - 500;
+           } else if (goal === "gain") {
+               calories = tdee + 500;
+           } else {
+               calories = tdee;
+           }
+
+           const protein = Math.round((calories * 0.3) / 4);
+           const carbs = Math.round((calories * 0.4) / 4);
+           const fat = Math.round((calories * 0.3) / 9);
+
+           document.getElementById("results").innerHTML = `
+               <h3>Your Daily Macros</h3>
+               <p>Total Calories: ${Math.round(calories)} kcal</p>
+               <p>Protein: ${protein} g<br>Carbs: ${carbs} g<br>Fat: ${fat} g</p>
+           `;
+       }
+   </script>
+</body>
+</html>
+
+
+

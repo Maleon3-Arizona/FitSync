@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meal Planner</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #059669;
+    }
+    #meal-plan {
+      margin-top: 30px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Meal Planner</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="macros.html">Macro Calculator</a>
+      <a href="planner.html">Meal Planner</a>
+      <a href="workout.html">Workout Planner</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <form id="mealForm">
+        <label for="calories">Daily Calorie Goal</label>
+        <input type="number" id="calories" placeholder="e.g. 2000">
+
+        <label for="diet">Diet Type</label>
+        <select id="diet">
+          <option value="balanced">Balanced</option>
+          <option value="high-protein">High Protein</option>
+          <option value="keto">Keto</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="paleo">Paleo</option>
+        </select>
+
+        <label for="meals">Number of Meals per Day</label>
+        <select id="meals">
+          <option value="3">3 meals (Breakfast, Lunch, Dinner)</option>
+          <option value="4">4 meals</option>
+          <option value="5">5 meals (with snacks)</option>
+        </select>
+
+        <button type="button" onclick="generateMealPlan()">Generate Plan</button>
+      </form>
+
+      <div id="meal-plan">
+        <h3>Your Custom Meal Plan Will Appear Here</h3>
+        <p>Once you generate a plan, you'll see suggested meals based on your preferences and calorie goal.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function generateMealPlan() {
+      const calories = document.getElementById("calories").value;
+      const diet = document.getElementById("diet").value;
+      const meals = document.getElementById("meals").value;
+
+      if (!calories) {
+        alert("Please enter a calorie goal.");
+        return;
+      }
+
+      document.getElementById("meal-plan").innerHTML = `
+        <h3>Your ${diet.charAt(0).toUpperCase() + diet.slice(1)} Meal Plan</h3>
+        <p><strong>Calories:</strong> ${calories} kcal</p>
+        <p><strong>Meals:</strong> ${meals} per day</p>
+        <ul>
+          <li><strong>Breakfast:</strong> Oatmeal with almond butter and banana</li>
+          <li><strong>Lunch:</strong> Grilled chicken salad with quinoa</li>
+          <li><strong>Dinner:</strong> Salmon with roasted vegetables</li>
+          ${meals >= 4 ? '<li><strong>Snack:</strong> Greek yogurt with honey</li>' : ''}
+          ${meals == 5 ? '<li><strong>Snack 2:</strong> Apple slices with peanut butter</li>' : ''}
+        </ul>
+      `;
+    }
+  </script>
+</body>
+</html>
+
+
+

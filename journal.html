@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Journal</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-size: 16px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+    .entry {
+      background: #f9fafb;
+      padding: 15px;
+      margin-top: 20px;
+      border-left: 4px solid #4f46e5;
+      border-radius: 6px;
+    }
+    .entry button {
+      background-color: #10b981;
+      margin-left: 10px;
+    }
+    header h1 {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Journal</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="macros.html">Macro Calculator</a>
+      <a href="planner.html">Meal Planner</a>
+      <a href="workout.html">Workout Planner</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+  </header>
+  <main>
+    <h2 style="margin-top: 20px;">New Entry</h2>
+    <textarea id="entryBox" placeholder="Write your thoughts, progress notes, or reflections..."></textarea>
+    <button onclick="saveEntry()">Save Entry</button>
+
+    <div id="entries">
+      <h2 style="margin-top: 40px;">Your Entries</h2>
+    </div>
+  </main>
+
+  <script>
+    let editingIndex = null;
+
+    function saveEntry() {
+      const box = document.getElementById('entryBox');
+      const content = box.value.trim();
+      if (!content) return alert("Please enter a journal entry.");
+
+      let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+
+      if (editingIndex !== null) {
+        entries[editingIndex] = content;
+        editingIndex = null;
+      } else {
+        entries.unshift(content);
+      }
+
+      localStorage.setItem('journalEntries', JSON.stringify(entries));
+      box.value = "";
+      renderEntries();
+    }
+
+    function renderEntries() {
+      const entriesDiv = document.getElementById('entries');
+      const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+
+      entriesDiv.innerHTML = "<h2>Your Entries</h2>";
+      entries.forEach((entry, index) => {
+        const div = document.createElement('div');
+        div.className = "entry";
+        div.innerHTML = `
+          <p>${entry}</p>
+          <button onclick="editEntry(${index})">Edit</button>
+        `;
+        entriesDiv.appendChild(div);
+      });
+    }
+
+    function editEntry(index) {
+      const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+      document.getElementById('entryBox').value = entries[index];
+      editingIndex = index;
+    }
+
+    window.onload = renderEntries;
+  </script>
+</body>
+</html>
+
+
+
