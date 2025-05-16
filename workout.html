@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workout Planner</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #f59e0b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d97706;
+    }
+    #log {
+      margin-top: 30px;
+      padding: 20px;
+      background: #fef9c3;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Workout Planner</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="macros.html">Macro Calculator</a>
+      <a href="planner.html">Meal Planner</a>
+      <a href="workout.html">Workout Planner</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <form id="workoutForm">
+        <label for="day">Workout Day</label>
+        <select id="day">
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
+
+        <label for="type">Workout Type</label>
+        <select id="type">
+          <option value="Upper Body">Upper Body</option>
+          <option value="Lower Body">Lower Body</option>
+          <option value="Full Body">Full Body</option>
+          <option value="Cardio">Cardio</option>
+          <option value="Stretching">Stretching</option>
+          <option value="Rest">Rest / Recovery</option>
+        </select>
+
+        <label for="time">Time (minutes)</label>
+        <input type="number" id="time" placeholder="e.g. 45">
+
+        <label for="notes">Workout Notes</label>
+        <textarea id="notes" placeholder="Log sets, reps, energy levels, soreness, etc."></textarea>
+
+        <button type="button" onclick="saveWorkout()">Save Workout</button>
+      </form>
+
+      <div id="log">
+        <h3>Your Workout Log</h3>
+        <div id="logEntries">
+          <p>No workouts logged yet.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function saveWorkout() {
+      const day = document.getElementById("day").value;
+      const type = document.getElementById("type").value;
+      const time = document.getElementById("time").value;
+      const notes = document.getElementById("notes").value;
+
+      if (!time || isNaN(time)) {
+        alert("Please enter a valid workout duration.");
+        return;
+      }
+
+      const entry = `
+        <div style="margin-bottom: 20px;">
+          <strong>${day} - ${type}</strong><br>
+          Duration: ${time} minutes<br>
+          Notes: ${notes ? notes : "No additional notes."}
+        </div>
+      `;
+
+      const log = document.getElementById("logEntries");
+      if (log.innerHTML.includes("No workouts logged yet.")) {
+        log.innerHTML = entry;
+      } else {
+        log.innerHTML = entry + log.innerHTML;
+      }
+
+      document.getElementById("workoutForm").reset();
+    }
+  </script>
+</body>
+</html>
+
+
+
